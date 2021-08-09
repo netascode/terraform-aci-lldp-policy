@@ -14,35 +14,35 @@ terraform {
 module "main" {
   source = "../.."
 
-  name        = "ABC"
-  alias       = "ALIAS"
-  description = "DESCR"
+  name           = "LLDP-ON"
+  admin_rx_state = true
+  admin_tx_state = true
 }
 
-data "aci_rest" "fvTenant" {
-  dn = "uni/tn-ABC"
+data "aci_rest" "lldpIfPol" {
+  dn = "uni/infra/lldpIfP-${module.main.name}"
 
   depends_on = [module.main]
 }
 
-resource "test_assertions" "fvTenant" {
-  component = "fvTenant"
+resource "test_assertions" "lldpIfPol" {
+  component = "lldpIfPol"
 
   equal "name" {
     description = "name"
-    got         = data.aci_rest.fvTenant.content.name
-    want        = "ABC"
+    got         = data.aci_rest.lldpIfPol.content.name
+    want        = module.main.name
   }
 
-  equal "nameAlias" {
-    description = "nameAlias"
-    got         = data.aci_rest.fvTenant.content.nameAlias
-    want        = "ALIAS"
+  equal "adminRxSt" {
+    description = "adminRxSt"
+    got         = data.aci_rest.lldpIfPol.content.adminRxSt
+    want        = "enabled"
   }
 
-  equal "descr" {
-    description = "descr"
-    got         = data.aci_rest.fvTenant.content.descr
-    want        = "DESCR"
+  equal "adminTxSt" {
+    description = "adminTxSt"
+    got         = data.aci_rest.lldpIfPol.content.adminTxSt
+    want        = "enabled"
   }
 }
