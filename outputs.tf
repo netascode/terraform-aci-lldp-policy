@@ -1,9 +1,9 @@
 output "dn" {
-  value       = aci_rest.lldpIfPol.id
+  value       = aci_rest_managed.lldpIfPol.id
   description = "Distinguished name of `lldpIfPol` object."
 }
 
 output "name" {
-  value       = aci_rest.lldpIfPol.content.name
+  value       = aci_rest_managed.lldpIfPol.content.name
   description = "LLDP interface policy name."
 }
